@@ -14,20 +14,48 @@
 #
 # Note that the first line of the CSV is header that describes the fields--this
 # should not be loaded into a City object.
+
+class City:
+      def __init__(self, name, lat, lon):
+            self.name = name
+            self.lat = float(lat)
+            self.lon = float(lon)
+      def __str__(self):
+        return f'{self.name}, {self.lat}, {self.lon}'
+
 cities = []
 
 def cityreader(cities=[]):
   # TODO Implement the functionality to read from the 'cities.csv' file
   # For each city record, create a new City instance and add it to the 
   # `cities` list
-    
-    return cities
+  import csv
+
+  with open('cities.csv') as csvfile:
+    readCSV = csv.reader(csvfile, delimiter=',')
+    skip = True
+
+    for row in readCSV:
+          if skip:
+            skip = False
+            continue
+
+          city = City(row[0], float(row[3]), float(row[4]))
+          cities.append(city)
+
+  return cities
+
+  # with open('cities.csv', newline='') as csvfile:
+  #   lines = csv.DictReader(csvfile)
+  #   for row in lines:
+  #         cities.append(City(row['city'], row['lat'], row['lng']))
+  #         return cities
 
 cityreader(cities)
 
 # Print the list of cities (name, lat, lon), 1 record per line.
 for c in cities:
-    print(c)
+    print(f'({c.name}, {c.lat}, {c.lon}')
 
 # STRETCH GOAL!
 #
@@ -57,15 +85,41 @@ for c in cities:
 # Phoenix: (33.5722,-112.0891)
 # Tucson: (32.1558,-110.8777)
 # Salt Lake City: (40.7774,-111.9301)
-
 # TODO Get latitude and longitude values from the user
 
 def cityreader_stretch(lat1, lon1, lat2, lon2, cities=[]):
+      
   # within will hold the cities that fall within the specified region
+  
   within = []
 
   # TODO Ensure that the lat and lon valuse are all floats
+
+  # TODO Ensure that the lat and lon valuse are all floats
+  lat1 = float(lat1)
+  lon1 = float(lon1)
+  lat2 = float(lat2)
+  lon2 = float(lon2)
+
   # Go through each city and check to see if it falls within 
   # the specified coordinates.
 
+  for c in cities:
+    check_x = c.lat
+    check_y = c.lon
+
+    # Check lats:
+    if (check_x > min(lat1, lat2)) and (check_x < max(lat1, lat2)):
+      # Check lons:
+      if (check_y > min(lon1, lon2)) and (check_y < max(lon1, lon2)):
+        # Passed both tests, add to list
+        within.append(c)
+
   return within
+"""
+lat1, lon1 = map(float, input('Enter lat1,lon1:').split(","))
+lat2, lon2 = map(float, input('Enter lat2,lon2:').split(","))
+within = cityreader_stretch(lat1, lon1, lat2, lon2, cities)
+for c in within:
+    print(f'({c.name}, {c.lat}, {c.lon})')
+"""
