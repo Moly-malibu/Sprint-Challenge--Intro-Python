@@ -31,7 +31,7 @@ def cityreader(cities=[]):
   # `cities` list
   import csv
 
-  with open('cities.csv') as csvfile:
+  with open('src/cityreader/cities.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     skip = True
 
